@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace FirstCSharpApp
+namespace RacingConsoleApp
 {
 
     class Program
@@ -24,8 +24,8 @@ namespace FirstCSharpApp
     }
 
     class Car
-    { 
-        public int Power { get; set; } 
+    {
+        public int Power { get; set; } = 4 == 4 ? 5 : 10;
         public string EngineType { get; set; }
 
         public Car() : this("fs") 

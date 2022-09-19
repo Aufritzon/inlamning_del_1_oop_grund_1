@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\wfrit\\source\\repos\\FirstCSharpApp\\FirstCSharpApp\\FirstCSharpApp.csproj",
-      "projectName": "FirstCSharpApp",
-      "projectPath": "C:\\Users\\wfrit\\source\\repos\\FirstCSharpApp\\FirstCSharpApp\\FirstCSharpApp.csproj",
+      "projectUniqueName": "C:\\Users\\wfrit\\source\\repos\\FirstCSharpApp\\FirstCSharpApp\\RacingConsoleApp.csproj",
+      "projectName": "RacingConsoleApp",
+      "projectPath": "C:\\Users\\wfrit\\source\\repos\\FirstCSharpApp\\FirstCSharpApp\\RacingConsoleApp.csproj",
       "packagesPath": "C:\\Users\\wfrit\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\wfrit\\source\\repos\\FirstCSharpApp\\FirstCSharpApp\\obj\\",
       "projectStyle": "PackageReference",
