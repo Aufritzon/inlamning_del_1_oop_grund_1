@@ -15,7 +15,7 @@ namespace RacingConsoleApp
         public float HorsePower { get;}
         public string EngineType { get; }
         public int Speed { get; set; } = 0;
-        public Direction Dir { get; set; } = Direction.DOWN;
+
         public Position Pos { get; set; } = new Position();
 
         public Car(string model, int horsePower, string engineType)

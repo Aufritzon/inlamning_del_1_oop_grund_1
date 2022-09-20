@@ -17,12 +17,9 @@ namespace RacingConsoleApp
     {
         public static void Main(string[] args)
         {
-            Car car = new Car("BMWi4",45,"4 cylindrig"){Dir = Direction.UP, Speed = 45};
-            Console.WriteLine(car.Pos.X);
 
-            car.Pos.X = 4;
-
-
+            RaceTrack r = new RaceTrack();
+            r.InitTrack(10);
 
         }
     }
