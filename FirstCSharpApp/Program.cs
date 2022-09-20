@@ -18,17 +18,9 @@ namespace RacingConsoleApp
         public static void Main(string[] args)
         {
             Car car = new Car("BMWi4",45,"4 cylindrig"){Dir = Direction.UP, Speed = 45};
-            Console.WriteLine(car.Dir + car.Speed + car.EngineType + car.Model);
-            Vector2 v = new Vector2(1, 2);
+            Console.WriteLine(car.Pos.X);
 
-            v.X = 4;
-
-            car.Pos = v;
-
-
-
-            Console.WriteLine(v.X);
-
+            car.Pos.X = 4;
 
 
 

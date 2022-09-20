@@ -12,13 +12,13 @@ namespace RacingConsoleApp
     internal class Car
     {
         public string Model { get; }
-        public int HorsePower { get;}
+        public float HorsePower { get;}
         public string EngineType { get; }
         public int Speed { get; set; } = 0;
         public Direction Dir { get; set; } = Direction.DOWN;
-        public Vector2 Pos { get; set; } = new Vector2(0, 0);
+        public Position Pos { get; set; } = new Position();
 
-        public Car(string model, int horsePower, String engineType)
+        public Car(string model, int horsePower, string engineType)
         {
             Model = model;
             HorsePower = horsePower;
@@ -26,6 +26,7 @@ namespace RacingConsoleApp
 
         }
 
+        private float GetWatt() => HorsePower * 745.7f;
 
         public void Gas()
         {
@@ -34,7 +35,6 @@ namespace RacingConsoleApp
 
         public void Move()
         {
-            Pos = new Vector2(Pos.X + Speed, Pos.Y + Speed );
 
         }
 
