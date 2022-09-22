@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Schema;
-
-namespace RacingConsoleApp
+﻿namespace RacingConsoleApp
 {
     internal class Car
     {
         public string Model { get; }
-        public float HorsePower { get;}
+        public float HorsePower { get; }
         public string EngineType { get; }
         public int Speed { get; set; } = 0;
 
@@ -38,6 +29,6 @@ namespace RacingConsoleApp
 
         }
 
-        
+
     }
 }
