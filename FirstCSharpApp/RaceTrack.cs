@@ -3,7 +3,7 @@
     internal class RaceTrack
     {
         private Random Random = new();
-        public Queue<(Turn, int)> TrackMap { get; } = new Queue<(Turn, int)>();
+        public List<(Turn, int)> TrackMap { get; } = new List<(Turn, int)>();
 
         public enum Turn
         {
@@ -20,7 +20,7 @@
         {
             for (int i = 0; i < difficulty; i++)
             {
-                TrackMap.Enqueue((RandomDir(), Random.Next(1000)));
+                TrackMap.Add((RandomDir(), Random.Next(1000)));
             }
         }
     }
