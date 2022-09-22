@@ -13,25 +13,35 @@
 
         public void ShowStartMenu()
         {
-            Console.WriteLine("Welcome To The Game!");
-            Console.WriteLine("Press Enter To Start The game");
-            Console.WriteLine("Press ESC to quit");
-            Console.WriteLine("Press i for info about the game");
+            Console.BackgroundColor = ConsoleColor.Red;
+            ConsoleKey key;
 
-            ConsoleKey key = Console.ReadKey().Key;
-
-            switch (key)
+            while (true)
             {
-                case ConsoleKey.Enter: 
-                    {
-                        Console.WriteLine("gfd"); 
-                        break;
-                    }
-                case ConsoleKey.Escape:
-                    {
+                Console.Clear();
+                Console.WriteLine("Welcome To The Game!");
+                Console.WriteLine("Press Enter To Start The game");
+                Console.WriteLine("Press ESC to quit");
+                Console.WriteLine("Press i for info about the game");
 
-                        break;
-                    }
+                key = Console.ReadKey().Key;
+                switch (key)
+                {
+                    case ConsoleKey.Enter:
+                        {
+                            StartGame();
+                            break;
+                        }
+                    case ConsoleKey.Escape:
+                        {
+                            return;
+                        }
+                    case ConsoleKey.I:
+                        {
+                            ShowRules();
+                            break;
+                        }
+                }
             }
 
 
@@ -39,14 +49,30 @@
 
         }
 
-        private void 
 
-        public void ShowRules()
+
+        private void StartGame ()
         {
+            Console.Clear();
+            while (true)
+            {
+                Console.WriteLine("Game is running");
+            }
+        }
+
+
+        private void ShowRules()
+        {
+            Console.Clear();
             Console.WriteLine("The game is about etc...");
-
             Console.WriteLine("\r\nPrec ESC to go back.");
+            ConsoleKey key;
 
+            while (true)
+            {
+                key = Console.ReadKey().Key;
+                if (key == ConsoleKey.Escape) { break;  }
+            }
         }
 
 
