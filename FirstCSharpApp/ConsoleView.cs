@@ -1,23 +1,31 @@
 ﻿
 
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Windows;
+using Microsoft.VisualBasic;
+
 namespace RacingConsoleApp
 {
     internal class ConsoleView
     {
-        private RaceTrack raceTrack;
-        private List<Car> cars;
+        private readonly RaceTrack _raceTrack;
+        private List<Car> _cars;
 
         public ConsoleView(RaceTrack raceTrack, List<Car> cars)
         {
-            this.raceTrack = raceTrack;
-            this.cars = cars;
+            this._raceTrack = raceTrack;
+            this._cars = cars;
         }
 
         public void ShowStartMenu()
         {
+            Console.SetWindowSize(45,10);
+            Console.SetBufferSize(45,10);
             Console.BackgroundColor = ConsoleColor.Red;
-            ConsoleKey key;
-          
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Title = "AMAZING RACING GAME!";
+            Console.CursorVisible = false;
 
             while (true)
             {
@@ -27,7 +35,7 @@ namespace RacingConsoleApp
                 Console.WriteLine("Press ESC to quit");
                 Console.WriteLine("Press i for info about the game");
 
-                key = Console.ReadKey(true).Key;
+                var key = Console.ReadKey(true).Key;
                 switch (key)
                 {
                     case ConsoleKey.Enter:
@@ -54,23 +62,45 @@ namespace RacingConsoleApp
         {
             Console.Clear();
             ShowDirection();
-            Console.ReadLine();
+            ShowCountdown(10);
+
         }
 
+        private void AskForUserAnswer()
+        {
+            var trackMap = _raceTrack.TrackMap;
+            Console.Clear();
+            for (int i = 0; i < trackMap.Count; i++)
+            {
+
+            }
+
+        }
+
+        private void ShowCountdown(int sec)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Seconds left:");
+            for (var i = sec; i >= 1; i--)
+            {
+                Console.Write("\r{0:00}", i);
+                Thread.Sleep(1000);
+            }
+            Console.Write("\rTIME'S UP!");
+            Thread.Sleep(1000);
+        }
 
         private void ShowDirection()
         {
-            (RaceTrack.Turn, int) instr;
-
-            for (int i = 0; i < raceTrack.TrackMap.Count; i++)
+            for (var i = 0; i < _raceTrack.TrackMap.Count; i++)
             {
-                instr = raceTrack.TrackMap[i];
+                var instr = _raceTrack.TrackMap[i];
 
                 if (i == 0)
                 {
                     Console.WriteLine("First turn {0} and drive {1} meters,".ToUpper(),instr.Item1, instr.Item2);
 
-                } else if (i == raceTrack.TrackMap.Count - 1)
+                } else if (i == _raceTrack.TrackMap.Count - 1)
                 {
                     Console.WriteLine("finally, turn {0} and drive {1} meters.".ToUpper(), instr.Item1, instr.Item2);
                 } else
@@ -78,7 +108,6 @@ namespace RacingConsoleApp
                     Console.WriteLine("then turn {0} and drive {1} meters,".ToUpper(), instr.Item1, instr.Item2);
 
                 }
-
             }
 
         }
@@ -88,10 +117,9 @@ namespace RacingConsoleApp
             Console.Clear();
             Console.WriteLine("The game is about etc...");
             Console.WriteLine("Prec ESC to go back.");
-            ConsoleKey key;
             while (true)
             {
-                key = Console.ReadKey(true).Key;
+                var key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.Escape) { break; }
             }
         }
