@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 using Microsoft.VisualBasic;
+using static RacingConsoleApp.RaceTrack;
 
 namespace RacingConsoleApp
 {
@@ -12,7 +13,6 @@ namespace RacingConsoleApp
     {
         private readonly RaceTrack _raceTrack;
         private List<Car> _cars;
-        private bool gameOver = false;
 
         public ConsoleView(RaceTrack raceTrack, List<Car> cars)
         {
@@ -58,17 +58,12 @@ namespace RacingConsoleApp
             }
         }
 
-
-
         private void StartGame ()
         {
             Console.Clear();
             ShowDirection();
-            //ShowCountdown(10);
-
+            ShowCountdown(10);
             AskForUserAnswer();
-
-
         }
 
         private void AskForUserAnswer()
@@ -78,19 +73,20 @@ namespace RacingConsoleApp
             ClearKeyBuffer();
 
 
-            for (int i = 0; i < trackMap.Count; i++)
+            for (var i = 0; i < trackMap.Count; i++)
             {
                 Console.Clear();
                 Console.WriteLine("Press -> to turn RIGHT");
                 Console.WriteLine("Press <- to turn LEFT");
-                bool correctInput = false;
+                var correctInput = false;
+
                 while (!correctInput) 
                 {
                     var key = Console.ReadKey(true).Key;
 
                     if (IsLeftOrRightKey(key))
                     {
-                        if (IsGameOver(i, KeyToTurn(key)))
+                        if (key != TurnToKey(_raceTrack.TrackMap[i].Item1))
                         {
                             Console.WriteLine("INCORRECT!");
                             Thread.Sleep(300);
@@ -113,21 +109,20 @@ namespace RacingConsoleApp
 
         }
 
-        private bool IsLeftOrRightKey(ConsoleKey key)
+        private static bool IsLeftOrRightKey(ConsoleKey key)
         {
             return key == ConsoleKey.RightArrow | key == ConsoleKey.LeftArrow;
         }
-        private RaceTrack.Turn? KeyToTurn(ConsoleKey key)
+        private static ConsoleKey TurnToKey(RaceTrack.Turn turn) 
         {
-            return key switch
+            return turn switch
             {
-                ConsoleKey.RightArrow => RaceTrack.Turn.RIGHT,
-                ConsoleKey.LeftArrow => RaceTrack.Turn.LEFT,
-                _ => null
+                RaceTrack.Turn.RIGHT => ConsoleKey.RightArrow,
+                RaceTrack.Turn.LEFT => ConsoleKey.LeftArrow,
+                _ => throw new ArgumentNullException(nameof(turn))
             };
         } 
-        private bool IsGameOver(int i, RaceTrack.Turn? turn) => _raceTrack.TrackMap[i].Item1 != turn;
-
+  
         private void ShowCountdown(int sec)
         {
             Console.WriteLine();
@@ -138,7 +133,6 @@ namespace RacingConsoleApp
                 Thread.Sleep(1000);
             }
             Console.Write("\rTIME'S UP!");
-            
             Thread.Sleep(1000);
         }
 
@@ -152,24 +146,10 @@ namespace RacingConsoleApp
 
         private void ShowDirection()
         {
-            for (var i = 0; i < _raceTrack.TrackMap.Count; i++)
+            foreach (var instr in _raceTrack.TrackMap)
             {
-                var instr = _raceTrack.TrackMap[i];
-
-                if (i == 0)
-                {
-                    Console.WriteLine("First turn {0} and drive {1} meters,".ToUpper(),instr.Item1, instr.Item2);
-
-                } else if (i == _raceTrack.TrackMap.Count - 1)
-                {
-                    Console.WriteLine("finally, turn {0} and drive {1} meters.".ToUpper(), instr.Item1, instr.Item2);
-                } else
-                {
-                    Console.WriteLine("then turn {0} and drive {1} meters,".ToUpper(), instr.Item1, instr.Item2);
-
-                }
+                Console.WriteLine("turn {0} and drive {1} meters,".ToUpper(),instr.Item1, instr.Item2);
             }
-
         }
 
         private void ShowRules()
