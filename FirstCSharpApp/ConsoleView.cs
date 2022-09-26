@@ -1,5 +1,6 @@
 ﻿
 
+using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -11,6 +12,7 @@ namespace RacingConsoleApp
     {
         private readonly RaceTrack _raceTrack;
         private List<Car> _cars;
+        private bool gameOver = false;
 
         public ConsoleView(RaceTrack raceTrack, List<Car> cars)
         {
@@ -62,7 +64,10 @@ namespace RacingConsoleApp
         {
             Console.Clear();
             ShowDirection();
-            ShowCountdown(10);
+            //ShowCountdown(10);
+
+            AskForUserAnswer();
+
 
         }
 
@@ -70,12 +75,58 @@ namespace RacingConsoleApp
         {
             var trackMap = _raceTrack.TrackMap;
             Console.Clear();
+            ClearKeyBuffer();
+
+
             for (int i = 0; i < trackMap.Count; i++)
             {
+                Console.Clear();
+                Console.WriteLine("Press -> to turn RIGHT");
+                Console.WriteLine("Press <- to turn LEFT");
+                bool correctInput = false;
+                while (!correctInput) 
+                {
+                    var key = Console.ReadKey(true).Key;
+
+                    if (IsLeftOrRightKey(key))
+                    {
+                        if (IsGameOver(i, KeyToTurn(key)))
+                        {
+                            Console.WriteLine("INCORRECT!");
+                            Thread.Sleep(300);
+                            Console.WriteLine("You Lose!");
+                            return;
+                        }
+
+                        Console.WriteLine("CORRECT!");
+                        Thread.Sleep(300);
+                        correctInput = true;
+                    }
+                    else
+                    {
+                        correctInput = false;
+                    }
+
+                }
 
             }
 
         }
+
+        private bool IsLeftOrRightKey(ConsoleKey key)
+        {
+            return key == ConsoleKey.RightArrow | key == ConsoleKey.LeftArrow;
+        }
+        private RaceTrack.Turn? KeyToTurn(ConsoleKey key)
+        {
+            return key switch
+            {
+                ConsoleKey.RightArrow => RaceTrack.Turn.RIGHT,
+                ConsoleKey.LeftArrow => RaceTrack.Turn.LEFT,
+                _ => null
+            };
+        } 
+        private bool IsGameOver(int i, RaceTrack.Turn? turn) => _raceTrack.TrackMap[i].Item1 != turn;
 
         private void ShowCountdown(int sec)
         {
@@ -87,7 +138,16 @@ namespace RacingConsoleApp
                 Thread.Sleep(1000);
             }
             Console.Write("\rTIME'S UP!");
+            
             Thread.Sleep(1000);
+        }
+
+        private static void ClearKeyBuffer()
+        {
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+            }
         }
 
         private void ShowDirection()
