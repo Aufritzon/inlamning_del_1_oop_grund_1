@@ -15,12 +15,9 @@ namespace RacingConsoleApp
     internal class ConsoleView
     {
         private readonly RaceTrack _raceTrack;
-        private List<Car> _cars;
-
-        public ConsoleView(RaceTrack raceTrack, List<Car> cars)
+        public ConsoleView(RaceTrack raceTrack)
         {
             this._raceTrack = raceTrack;
-            this._cars = cars;
         }
 
         public void ShowStartMenu()

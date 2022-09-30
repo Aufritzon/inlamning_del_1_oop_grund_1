@@ -8,8 +8,7 @@ namespace RacingConsoleApp
         {
 
             RaceTrack track = new RaceTrack(4);
-            Car[] cars = new Car[4];
-            ConsoleView view = new ConsoleView(track,cars.ToList());
+            ConsoleView view = new ConsoleView(track);
             view.ShowStartMenu();
 
         
