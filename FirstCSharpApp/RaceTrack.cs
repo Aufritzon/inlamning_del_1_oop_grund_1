@@ -2,35 +2,51 @@
 {
     internal class RaceTrack
     {
-        private Random Random = new();
-        public List<(Turn, int)> TrackMap { get; } = new List<(Turn, int)>();
+        private readonly Random _rand = new();
+        private readonly int _difficulty;
+        public List<(Turn, int)> TrackMap { get; } = new();
 
         public enum Turn
         {
-            RIGHT,
-            LEFT
+            Right,
+            Left
         }
-        public RaceTrack(int difficulty) => InitTrack(difficulty);
+
+        public RaceTrack(int difficulty)
+        {
+            _difficulty = difficulty;
+            InitTrack(difficulty);
+        }
+
         private Turn RandomDir()
         {
             Turn[]? dirs = Enum.GetValues<Turn>();
-            return (Turn)dirs.GetValue(Random.Next(dirs.Length));
+            return (Turn)dirs.GetValue(_rand.Next(dirs.Length));
         }
         private void InitTrack(int difficulty)
         {
-            for (int i = 0; i < difficulty; i++)
+            for (var i = 0; i < difficulty; i++)
             {
-                TrackMap.Add((RandomDir(), Random.Next(1000)));
+                TrackMap.Add((RandomDir(), _rand.Next(1000)));
             }
         }
-        public void NewTrack(int difficulty)
+
+        public void PrintTrackMap()
+        {
+            Console.Clear();
+            foreach (var instr in TrackMap)
+            {
+                Console.WriteLine("turn {0} and drive {1} meters".ToUpper(), instr.Item1, instr.Item2);
+            }
+        }
+
+        public void NewTrack()
         {
             TrackMap.Clear();
-            for (int i = 0; i < difficulty; i++)
+            for (var i = 0; i < _difficulty; i++)
             {
-                TrackMap.Add((RandomDir(), Random.Next(500)));
+                TrackMap.Add((RandomDir(), _rand.Next(500)));
             }
-
         }
     }
 }

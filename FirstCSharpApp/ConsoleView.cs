@@ -1,65 +1,42 @@
 ﻿
 
-using System;
-using System.Globalization;
-using System.Net.Http.Headers;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Windows;
-using Microsoft.VisualBasic;
-using static RacingConsoleApp.RaceTrack;
-
 namespace RacingConsoleApp
 {
     internal class ConsoleView
     {
-        private readonly RaceTrack _raceTrack;
-        public ConsoleView(RaceTrack raceTrack)
-        {
-            this._raceTrack = raceTrack;
-        }
-
-        public void ShowStartMenu()
+        public ConsoleView()
         {
             InitConsole();
-            ConsoleKey key;
+        }
 
+        public ConsoleKey GetStartInput()
+        {
             while (true)
             {
-                PrintStartMenu();
+                ConsoleKey key;
                 do
                 {
                     key = Console.ReadKey(true).Key;
-                }
-                while (!IsValidStartKey(key));
+                } while (!IsValidStartKey(key));
 
-                switch (key)
-                {
-                    case ConsoleKey.Enter:
-                        {
-                            StartGame();
-                            break;
-                        }
-                    case ConsoleKey.Escape:
-                        {
-                            return;
-                        }
-                    case ConsoleKey.I:
-                        {
-                            ShowRules();
-                            break;
-                        }
-                }
+                return key;
             }
         }
 
-        private void PrintStartMenu()
+        public void PrintIsCorrect(int delay)
+        {
+            Console.WriteLine("CORRECT!");
+            Thread.Sleep(delay);
+            ClearKeyBuffer();
+        }
+
+        public void PrintStartMenu()
         {
             Console.Clear();
             Console.WriteLine("Welcome To The Game!");
-            Console.WriteLine("Press Enter To Start The game");
-            Console.WriteLine("Press ESC to quit");
+            Console.WriteLine("____________________\n");
+            Console.WriteLine("Press Enter To Start The game\n");
+            Console.WriteLine("Press ESC to quit\n");
             Console.WriteLine("Press i for info about the game");
         }
 
@@ -70,144 +47,77 @@ namespace RacingConsoleApp
             Console.Title = "AMAZING RACING GAME!";
             Console.CursorVisible = false;
         }
+
         private bool IsValidStartKey(ConsoleKey key)
         {
-            return key == ConsoleKey.Enter || key == ConsoleKey.Escape || key == ConsoleKey.I;
+            return key is ConsoleKey.Enter or ConsoleKey.Escape or ConsoleKey.I;
 
         }
 
-        private void StartGame()
-        {
-            Console.Clear();
-            PromptUser();
-            ShowCountdown(3);
-            ShowDirection();
-            ShowCountdown(2);
-            AskForUserAnswer();
-        }
 
-        private void PromptUser()
+        public void PrintMemPrompt()
         {
             Console.Clear();
             Console.WriteLine("MEMORIZE THE INSTRUCTIONS!");
         }
 
-        private void AskForUserAnswer()
+        public void PrintTurnPrompt()
         {
-            var trackMap = _raceTrack.TrackMap;
             Console.Clear();
-            ClearKeyBuffer();
-
-
-            for (var i = 0; i < trackMap.Count; i++)
-            {
-                Console.Clear();
-                Console.WriteLine("Press -> to turn RIGHT");
-                Console.WriteLine("Press <- to turn LEFT");
-                ConsoleKey key;
-
-                do
-                {
-                    key = Console.ReadKey(true).Key;
-                }
-                while (!IsLeftOrRightKey(key));
-
-                PrintInputKind(IsWrongTurn(i, key));
-                if(IsWrongTurn(i, key)) return;
-
-                Console.CursorVisible = true;
-
-                string input;
-
-                do
-                {
-                    Console.Clear();
-                    Console.WriteLine("Input meters to drive: ");
-                    input = Console.ReadLine();
-                }
-                while (!IsParsable(input));
-
-                Console.CursorVisible = false;
-
-                PrintInputKind(IsWrongDist(i, input));
-                if (IsWrongDist(i, input)) return;
-            }
-
+            Console.WriteLine("Press -> to turn RIGHT");
+            Console.WriteLine("Press <- to turn LEFT");
         }
 
-        private bool IsParsable(string input) 
+        public ConsoleKey GetTurnInput()
         {
+            ConsoleKey key;
+            do
+            {
+                key = Console.ReadKey(true).Key;
+            } while (!IsLeftOrRightKey(key));
 
-            try
-            {
-                int result = Int32.Parse(input);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
+            return key;
         }
 
-        private void GameOver()
+        public void PrintDistPrompt()
         {
-            PrintGameOver();
-            while (true)
-            {
-                if (Console.ReadKey(true).Key == ConsoleKey.Enter) break;
-            }
-            _raceTrack.NewTrack(3);
+            Console.Clear();
+            Console.WriteLine("Input meters to drive: ");
         }
 
-        private void PrintGameOver()
+        public int GetDistInput()
+        {
+            Console.CursorVisible = true;
+            string? input;
+            int n;
+            do
+            {
+                input = Console.ReadLine();
+            } while (!int.TryParse(input, out n));
+
+            Console.CursorVisible = false;
+
+            return n;
+        }
+
+
+        public void PrintGameOver(int delay)
         {
             Console.Clear();
             Console.WriteLine("Game Over, You Lose!");
-            Console.WriteLine("Press ENTER to go back to the Start Menu.");
+            Thread.Sleep(delay);
+            ClearKeyBuffer();
         }
 
-        private bool IsWrongTurn(int index, ConsoleKey key) 
-        {
-            return key != TurnToKey(_raceTrack.TrackMap[index].Item1);
-        }
 
-        private bool IsWrongDist(int index, string dist)
-        {
-            return int.Parse(dist) != _raceTrack.TrackMap[index].Item2;
 
-        }
-        
-
-        private void PrintInputKind(bool isWrongTurn)
-        {
-            if (isWrongTurn)
-            {
-                Console.WriteLine("INCORRECT!");
-                Thread.Sleep(300);
-                GameOver();
-            } else
-            {
-                Console.WriteLine("CORRECT!");
-                Thread.Sleep(300);
-            }
-
-        }
-
-        private static bool IsLeftOrRightKey(ConsoleKey key)
+        public static bool IsLeftOrRightKey(ConsoleKey key)
         {
             return key == ConsoleKey.RightArrow | key == ConsoleKey.LeftArrow;
         }
-        private static ConsoleKey TurnToKey(RaceTrack.Turn turn) 
-        {
-            return turn switch
-            {
-                RaceTrack.Turn.RIGHT => ConsoleKey.RightArrow,
-                RaceTrack.Turn.LEFT => ConsoleKey.LeftArrow,
-                _ => throw new ArgumentNullException(nameof(turn))
-            };
-        } 
-  
-        private void ShowCountdown(int sec)
+
+
+        public static void ShowCountdown(int sec)
         {
             Console.WriteLine();
             Console.WriteLine("Seconds left:");
@@ -216,8 +126,10 @@ namespace RacingConsoleApp
                 Console.Write("\r{0:00}", i);
                 Thread.Sleep(1000);
             }
+
             Console.Write("\rTIME'S UP!");
             Thread.Sleep(1000);
+            ClearKeyBuffer();
         }
 
         private static void ClearKeyBuffer()
@@ -228,26 +140,26 @@ namespace RacingConsoleApp
             }
         }
 
-        private void ShowDirection()
-        {
-            Console.Clear();
-            foreach (var instr in _raceTrack.TrackMap)
-            {
-                Console.WriteLine("turn {0} and drive {1} meters".ToUpper(),instr.Item1, instr.Item2);
-            }
-        }
 
-        private void ShowRules()
+        public void WaitForEscape()
         {
-            Console.Clear();
-            Console.WriteLine("The game is about etc...");
-            Console.WriteLine("Prec ESC to go back.");
             while (true)
             {
                 var key = Console.ReadKey(true).Key;
-                if (key == ConsoleKey.Escape) { break; }
+                if (key == ConsoleKey.Escape)
+                {
+                    break;
+                }
             }
         }
-    }
 
+        public void PrintRules()
+        {
+            Console.Clear();
+            Console.WriteLine("Try to memorize the directions before the timer runs out!");
+            Console.WriteLine("When prompted: Make the correct turns and drive the correct distances to win!");
+            Console.WriteLine("Press ESC to go back.");
+        }
+
+    }
 }
