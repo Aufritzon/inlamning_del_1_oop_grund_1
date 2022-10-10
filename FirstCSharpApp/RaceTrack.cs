@@ -3,7 +3,7 @@
     internal class RaceTrack
     {
         private readonly Random _rand = new();
-        private readonly int _difficulty;
+        public int Difficulty { get; set; }
         public List<(Turn, int)> TrackMap { get; } = new();
 
         public enum Turn
@@ -14,13 +14,13 @@
 
         public RaceTrack(int difficulty)
         {
-            _difficulty = difficulty;
+            Difficulty = difficulty;
             InitTrack(difficulty);
         }
 
         private Turn RandomDir()
         {
-            Turn[]? dirs = Enum.GetValues<Turn>();
+            Turn[] dirs = Enum.GetValues<Turn>();
             return (Turn)dirs.GetValue(_rand.Next(dirs.Length));
         }
         private void InitTrack(int difficulty)
@@ -43,7 +43,7 @@
         public void NewTrack()
         {
             TrackMap.Clear();
-            for (var i = 0; i < _difficulty; i++)
+            for (var i = 0; i < Difficulty; i++)
             {
                 TrackMap.Add((RandomDir(), _rand.Next(500)));
             }

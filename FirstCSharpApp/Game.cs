@@ -1,18 +1,18 @@
 ﻿namespace RacingConsoleApp
 {
-    internal class Controller
+    internal class Game
     {
         public ConsoleView View { get; }
         public RaceTrack RaceTrack { get; }
 
-        public Controller(ConsoleView view, RaceTrack raceTrack)
+        public Game(ConsoleView view, RaceTrack raceTrack)
         {
             View = view;
             RaceTrack = raceTrack;
         }
 
 
-        public void InitController()
+        public void InitGame()
         {
             while (true)
             {
@@ -47,7 +47,7 @@
             View.PrintMemPrompt();
             ConsoleView.ShowCountdown(2);
             RaceTrack.PrintTrackMap();
-            ConsoleView.ShowCountdown(5);
+            ConsoleView.ShowCountdown(15);
 
             foreach (var instr in RaceTrack.TrackMap)
             {
@@ -76,6 +76,7 @@
                     return;
                 }
             }
+            View.PrintYouWin(3000);
         }
 
         private RaceTrack.Turn KeyToTurn(ConsoleKey key)

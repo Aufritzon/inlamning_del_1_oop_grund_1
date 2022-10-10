@@ -109,7 +109,13 @@ namespace RacingConsoleApp
             ClearKeyBuffer();
         }
 
-
+        public void PrintYouWin(int delay)
+        {
+            Console.Clear();
+            Console.WriteLine("Congratulations! You Won!");
+            Thread.Sleep(delay);
+            ClearKeyBuffer();
+        }
 
         public static bool IsLeftOrRightKey(ConsoleKey key)
         {
