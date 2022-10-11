@@ -37,7 +37,8 @@ namespace RacingConsoleApp
             Console.WriteLine("____________________\n");
             Console.WriteLine("Press Enter To Start The game\n");
             Console.WriteLine("Press ESC to quit\n");
-            Console.WriteLine("Press i for info about the game");
+            Console.WriteLine("Press I for info about the game\n");
+            Console.WriteLine("Press H to honk you car");
         }
 
         private void InitConsole()
@@ -50,8 +51,7 @@ namespace RacingConsoleApp
 
         private bool IsValidStartKey(ConsoleKey key)
         {
-            return key is ConsoleKey.Enter or ConsoleKey.Escape or ConsoleKey.I;
-
+            return key is ConsoleKey.Enter or ConsoleKey.Escape or ConsoleKey.I or ConsoleKey.H;
         }
 
 
@@ -138,7 +138,7 @@ namespace RacingConsoleApp
             ClearKeyBuffer();
         }
 
-        private static void ClearKeyBuffer()
+        public static void ClearKeyBuffer()
         {
             while (Console.KeyAvailable)
             {
